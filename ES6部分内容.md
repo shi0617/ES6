@@ -223,6 +223,65 @@ function fn(miaov){  // 形参就是声明局部变量，不能重复声明
 
 fn(1)
 ```
+###**解构赋值**
+####**数组的结构赋值**
+```
+function test(){
+    return [1,2,3,4];
+}
+
+var [a,b] = test();
+console.log(a,b); // 1,2
+```
+test函数执行后，返回的是一个数组。取数组前两个值分别存在变量中，根据解构赋值的规则，在左侧声明变量，放在中括号中，会把右边数组中的值一一对应赋值给左边的变量。
+
+####**对象的解构赋值**
+```
+let o = {miaov:1,ketang:2,foo:3,abc:10,k:'leo'};
+// ，没有与之对应的属性，赋一个默认值
+// 用A:B 把A对用的值赋值给变量B，不能使用A，要使用B。
+let {ketang,miaov,foo,abc=12345,k:user="momo"} = o;  
+
+console.log(abc);//10
+console.log(k);//Uncaught ReferenceError: k is not defined
+console.log(user);//momo
+```
+<br/>
+```
+function test1(){
+    return {a:1,b:2,c:3};
+}
+
+var {a,b} = test();
+console.log(a,b); // 1,2
+```
+test1函数执行后，返回的是一个对象。分别取出对象中属性为a和b的值，根据解构赋值的规则，在左侧声明变量，放在大括号中，变量名要和属性名保持一致。
+
+####**函数参数的解构赋值**
+```
+function test({a,b}){
+    console.log(a,b);//1,2
+}
+
+test({a:1,b:2,c:3})
+```
+在形参中定义变量，得到实参对象指定的属性。
+####**默认值**
+可以给变量设置默认值和另声明一个变量
+```
+var {a:otherVar,b,d=11111} = {a:1,b:2,c:3};
+console.log(d); // 11111【11111是默认值，在解构的对象中有d属性，就去拿的d属性的值，没有就是默认设置的11111；d属性的值是null，找到的还是null；如果d属性的值原本是undefined占位，那最后d解构赋值的是默认值11111】
+console.log(otherVar); // 1
+console.log(a); // Uncaught ReferenceError: a is not defined
+```
+- 使用 等号`=`给变量赋一个默认值，如果右边对象中没有与之对应的属性，则按默认值来。
+- 使用`:`重新声明一个变量，会把匹配到的a的值赋给新的变量otherVar，此时在外面使用时候，不能使用a。
+- 也可以连着一起使用：
+```
+var {a,b,d:foo='默认值'} = {a:1,b:2,c:3};
+console.log(foo); // '默认值'
+```
+
 
 
 
