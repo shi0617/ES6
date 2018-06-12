@@ -281,6 +281,128 @@ console.log(a); // Uncaught ReferenceError: a is not defined
 var {a,b,d:foo='默认值'} = {a:1,b:2,c:3};
 console.log(foo); // '默认值'
 ```
+###**箭头函数 Arrow Functions**
+在ES6中，箭头函数就是函数的一种**简写形式**,允许使用“箭头”（=>）**定义函数**。
+```
+=> "箭头"
+	使用“箭头”（=>）定义函数
+```
+之前声明函数：
+```
+function foo(){
+    return 1;
+}
+```
+改造为箭头函数:
+```
+let foo = () => 1;
+```
+####**箭头函数的参数**
+上面使用“箭头”（=>）定义的函数，左侧的()包裹函数的形参，如果定义的函数**没有形参**或者**多个形参**，一定要使用括号：
+```
+// 没有参数，要使用()
+let test = () => 1;
+
+// 多个参数，要使用()
+let foo = (a,b) => a + b;
+let bar = (a,b,c) => a + b + c;
+```
+如果只有**一个形参**，可以省略括号：
+```
+let foo = a => a;
+```
+####**箭头函数return返回值**
+“箭头”（=>）的右侧是函数体代码，会在函数执行后作为函数的返回值，不需要显示的使用return:
+```
+let foo = (a,b) => a + b;
+console.log(foo(1,2)); // 3
+```
+```
+let arr = [1,2,3];  
+let newArr = arr.map(item => item * 2);
+console.log(newArr); // [2,4,6]
+```
+有多行代码，可以写在一对{}中，手动调用return返回值:
+```
+let foo = (a,b) => {
+    console.log(a)
+    console.log(b)
+    return a + b; 
+}
+```
+当要返回的是对象时，又不想手动调用return，记得加上()保证是一个对象整体，而不被误以为是函数体：
+```
+var obj = () => ({a:1,b:2})
+console.log(obj());  // {a:1,b:2}
+```
+####**箭头函数中this指向**
+- 函数的this是在调用的时候决定this的值
+- 箭头函数，绑定的是所定义时在的作用域的this
+    - 箭头函数内的this，绑定定义时所在的作用域的this，并不是在调用时候决定this的指向。
+```
+document.onclick = function (){
+    setTimeout(function (){
+        console.log(this); // 定时器执行的函数，在非严格模式下this指向window  
+    },1000) 
+}
+```
+<br/>
+```
+let o = {
+	fn:function (){
+		console.log(this);	//对象o
+	},
+	f: () => {
+		console.log(this);//window
+	}
+}
+
+o.fn();
+o.f();
+```
+如果要在setTimeout中使用点击时的元素，通常需要存一个变量。
+```
+document.onclick = function (){
+    var that = this;
+    setTimeout(function (){
+        console.log(that); // that变量存的就是触发事件的元素document
+    },1000) 
+}
+```
+如果使用箭头函数，一切将会变得非常简单：
+```
+document.onclick = function (){
+    setTimeout( () => {
+        console.log(this); //document
+    },1000) 
+}
+```
+箭头函数是在事件处理函数中定义，事件处理函数this指向的是触发事件的元素，所以这个this，也就是触发事件的元素。
+####**使用箭头函数的特性**：
+- 函数体内的this值，绑定定义时所在的作用域的this
+- 不可以当作构造函数
+- 不可以使用arguments对象
+```
+//把上一个例子都换成箭头函数的写法
+document.onclick = () => setTimeout( () => {
+        console.log(this); //this指向Window，这个大括号里面找this没有找到，向外找，就是全局，全局的this指向window
+},1000)  
+```
+<br/>
+```
+
+function fn(){
+	console.log(arguments)//Arguments(5) [1, 2, 3, 4, 5, callee: ƒ, Symbol(Symbol.iterator): ƒ]
+}
+fn(1,2,3,4,5)
+
+
+let f = () => {
+	// 箭头函数中没有arguments
+	console.log(arguments);  //Uncaught ReferenceError: arguments is not defined
+}
+f(1,2,3,4,5);
+```
 
 
 
