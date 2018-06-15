@@ -432,6 +432,106 @@ function fn(a,b=10){//在形参中直接写上b=10即可。
     return a + b;
 }
 ```
+### **扩展运算符（spread）和 Rest操作符**
+扩展运算符和Rest操作符都指的是…,根据上下文的语境不同，解析方式也不同。
+####**Rest操作符**
+- REST即**表述性状态传递**（Representational State Transfer)
+- rest参数 
+	- ...变量
+	    - 在使用解构赋值时，把剩余的参数放在数组中，数组的赋值给...后的变量用在赋值上
+	    - 如果是对象，会把剩余的属性放在新对象中
+	    - Rest操作符可取到arguments,把实参传入到一个数组中，而不是arguments类数组中
+	     - 注意，Rest操作符只能写在参数的最后，不能写在开头或中间，否则会报语法错误
+```
+//在使用解构赋值时，会把剩余的值，放在一个数组中：
+let f = (a,b,...abc) => {
+	console.log(abc);  
+}
+f(1,2,3,4,5);// [3, 4, 5]
+
+
+let arr = [1,2,3,4,5,6,7,8];
+let [a,b,c,...newArr] = arr;
+console.log(newArr);//[4, 5, 6, 7, 8]
+```
+<br/>
+```
+//如果是对象，会把剩余的属性放在新对象中：
+var o = {a:1,b:2,c:3};
+var {a,...d} = o;
+console.log(a);  // 1
+console.log(d); // {b:2,c:3}
+```
+<br/>
+```
+//在函数的形参中使用，会把剩余的形参都放在数组中：
+function fn(a,...b){
+    console.log(a);  // 1
+    console.log(b); // [2,3,4]
+}
+fn(1,2,3,4)
+```
+<br/>
+```
+//Rest操作符可取到arguments,把实参传入到一个数组中，而不是arguments类数组中：
+function fn(...b){
+    console.log(b); // [1,2,3,4]
+}
+
+fn(1,2,3,4)
+```
+- rest参数必须放在最后
+```
+let f = (a,...abc,b) => {
+	console.log(abc);  //Uncaught SyntaxError: Rest parameter must be last formal parameter
+}
+f(1,2,3,4,5)
+//parameter`[pəˈræmɪtə(r)]`n.	[数] 参数; <物><数>参量; 限制因素; 决定因素
+```
+####**扩展运算符**
+####**数组扩展运算符**
+将一个数组转为用逗号分隔的参数序列。。
+```
+let arr = [1,2,3,4,5,6,7,8];
+let [a,b,c,...newArr] = arr;
+console.log(newArr);//[4, 5, 6, 7, 8]
+```
+把数组的每一项扩展到另一个数组中。
+```
+let arr2 = ['a',"b","c"];
+let arr3 = [1,2,3,...arr2];
+console.log(arr3);// [1, 2, 3, "a", "b", "c"]
+```
+也可以从数组中找到最大值：
+```
+let arr4 = [1,2,3,4,5];
+
+//在数组中找出最大值
+console.log(Math.max.apply(null,arr4));//5
+console.log(Math.max.call(null,...arr4));//5
+console.log(Math.max(...arr4));//5
+```
+####**对象扩展运算符**
+扩展运算符（…）用于取出参数对象的所有可遍历属性，拷贝到当前对象中，相当于浅复制。
+```
+var arr = {a:1,b:2,c:3};
+console.log({...arr});
+```
+利用对象的属性是唯一的特性，后面定义的覆盖前面的属性，可以修改一个属性的值：
+```
+var arr = {a:1,b:2,c:3};
+console.log({...arr,a:'修改了'});//{a: "修改了", b: 2, c: 3}
+
+let o = {
+	aa:1,
+	bb:2
+}
+let obj = {
+	...o,
+	aa:1000//有相同的属性，后面的会覆盖之前的
+};
+console.log(obj);//{aa: 1000, bb: 2}
+```
 
 
 
