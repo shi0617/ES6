@@ -532,6 +532,42 @@ let obj = {
 };
 console.log(obj);//{aa: 1000, bb: 2}
 ```
+###**对象的简洁表示法**
+变量名和属性名相同，可直接写入变量名
+&emsp;&emsp;函数可省略function关键字
+```
+var a = 10;
+var b = 20;
+var o = {
+    a,
+    b
+}
+
+console.log(o); // {a:10,b:20}
+```
+```
+let t = (function (){
+	function add(){
+				
+		}
+	function isFunction(){
+				
+		}
+
+	function isArray(){
+				
+		}	
+
+	return {
+		add,
+		isFunction,
+		isArray
+	}
+})();
+
+console.log(t);
+```
+***
 
 
 
